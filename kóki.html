@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Kóki</title>
+</head>
+
+<body>
+    <!--
+        Noe å trykke på
+        -   antall kókier går opp
+        -   tall som viser antall kókier
+
+        Butikk
+        -   kjøpe oppgraderinger og bygninger for kókier
+
+        Oppgradering
+        -   flere kókier per klikk
+        -   bygninger klikke raskere og flere kókier per bygning klikk
+
+        Bygninger
+        -   bygninger som klikker automatisk på kókien
+        -   bygninger som bekjemper/skremmer Kókimonster
+
+        Kókimonster
+        -   Kókimonster dukker opp og spiser x kókier per y sekund
+        -   x og y blir større med Kókimonsters nivå
+        -   Kókimonster kan komme i høyere nivå bassert på antall kókier (og kanskje bygninger og oppgraderinger) du har
+        -   kast 1 kóki på Kókimonster for å få de til å gå
+    -->
+
+    <div id="div_koki">
+        <div id="div_koki_tall">
+            <h1 id="kokicount">Kókier: 0</h1>
+        </div><div id="div_koki_knapp">
+            <img src="kókimg/Kóki2.png" alt="Kóki" id="kokiknapp">
+        </div>
+    </div>
+
+    <div id="div_monster">
+        <div id="monster_knapp"></div>
+        <p id="p_monster"></p>
+    </div>
+
+    <div id="div_bygninger">
+    </div>
+
+
+    <div id="div_oppgraderinger">
+        <h3>Oppgraderinger:</h3>
+        <p id="p_mus">Mus klikk: 1</p>
+        <p id="p_bygg">Antall bygg: 0</p>
+        <p id="p_bygg_klikk">Bygg klikk: 1</p>
+        <p id="p_bygg_speed">Bygg fart: 1</p>
+    </div>
+
+
+    <div id="div_butikk">
+        <div class="div_butikker">
+            <button id="knapp_oppgrader_mus" class="knapp_butikk_mus">Oppgrader mus:<br>50 kókier</button>
+        </div>
+        <div class="div_butikker">
+            <button id="knapp_kjøp_bygg" class="knapp_butikk_bygg">Kjøp bygg:<br>100 kókier</button>
+            <button id="knapp_speed_bygg" class="knapp_butikk_bygg">Oppgrader bygg fart:<br>100 kókier</button>
+            <button id="knapp_klikk_bygg" class="knapp_butikk_bygg">Oppgrader bygg klikk:<br>200 kókier</button>
+        </div>
+        <div class="div_butikker">
+            <button id="knapp_speed_defender" class="knapp_butikk_defender">Oppgrader defender fart:<br>100 kókier</button>
+            <button id="knapp_klikk_defender" class="knapp_butikk_defender">Oppgrader defender klikk:<br>200 kókier</button>
+        </div>
+    </div>
+
+
+
+    <script>
+        var EL_kokiKnapp = document.querySelector('#kokiknapp')
+        var EL_kokiCounter = document.querySelector('#kokicount')
+
+        var EL_byggningerDiv = document.querySelector('#div_bygninger')
+        var EL_monsterDiv = document.querySelector('#div_monster')
+
+        var EL_musButikkKnapp = document.querySelector('#knapp_oppgrader_mus')
+        var EL_byggButikkKnapp = document.querySelector('#knapp_kjøp_bygg')
+        var EL_byggSpeedButikkKnapp = document.querySelector('#knapp_speed_bygg')
+        var EL_byggKlikkButikkKnapp = document.querySelector('#knapp_klikk_bygg')
+
+        var EL_musP = document.querySelector('#p_mus')
+        var EL_byggP = document.querySelector('#p_bygg')
+        var EL_byggSpeedP = document.querySelector('#p_bygg_speed')
+        var EL_byggKlikkP = document.querySelector('#p_bygg_klikk')
+
+        var EL_monsterKnapp = document.querySelector('#monster_knapp')
+        var EL_monsterP = document.querySelector('#p_monster')
+
+        var kokiTall = 0
+
+        var musKlikkPower = 1
+        var byggTall = 0
+        var byggSpeed = 5000
+        var byggSpeedTall = 1
+        var byggKlikkPower = 1
+        var byggRepeater
+        
+
+        var musPris = 50
+        var byggPris = 100
+        var byggSpeedPris = 100
+        var byggKlikkPris = 200
+
+
+        var monsterTimer = Math.floor(Math.random() * (4500 -3000) + 3000)
+        console.log(monsterTimer)
+        var monsterLevel = Math.floor(Math.random() * 3)
+        var monsterDifficulty
+        var monsterActive = false
+        var monsterEatTimer
+        var monsterPris
+
+
+
+
+        EL_kokiKnapp.addEventListener('click', klikk)
+        EL_musButikkKnapp.addEventListener('click', musKlikkUp)
+        EL_byggButikkKnapp.addEventListener('click', byggAdd)
+        EL_byggSpeedButikkKnapp.addEventListener('click', byggSpeedUp)
+        EL_byggKlikkButikkKnapp.addEventListener('click', byggKlikkUp)
+        EL_monsterKnapp.addEventListener('click', monsterFed)
+
+        function klikk(){
+            kokiTall += musKlikkPower
+            console.log('yo!')
+            EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+
+            //console.log("Anim state: ",EL_kokiKnapp.style.animationPlayState)
+
+            //EL_kokiKnapp.style.animation = "ensmol 0.05s linear"
+            //EL_kokiKnapp.style.animationPlayState = "running"
+
+
+        }
+
+
+        function musKlikkUp(){
+            if (kokiTall >= musPris) {
+                musKlikkPower++
+                kokiTall -= musPris
+                musPris += 50
+                EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+                EL_musButikkKnapp.innerHTML = 'Oppgrader mus:<br>' + musPris + ' kókier'
+                EL_musP.innerHTML = 'Mus klikk: ' + musKlikkPower
+            }
+        }
+
+
+        function byggAdd(){
+            if (kokiTall >= byggPris) {
+                byggTall++
+                kokiTall -= byggPris
+                byggPris += 100
+                EL_byggningerDiv.innerHTML += '<img src="kókimg/Pow.gif" alt="bygg" class="bygg" height="100px">'
+                EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+                EL_byggButikkKnapp.innerHTML = 'Kjøp bygg:<br>' + byggPris + ' kókier'
+                EL_byggP.innerHTML = 'Antall bygg: ' + byggTall
+            }
+        }
+        function byggRealspeed(){
+        }
+        function byggKlikk(){
+            clearInterval(byggRepeater)
+            byggRepeater = setInterval(byggKlikk, byggSpeed)
+            kokiTall += byggKlikkPower*byggTall
+            EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+        }
+        function byggSpeedUp(){
+            if (kokiTall >= byggSpeedPris) {
+                byggSpeed -= byggSpeed/8
+                byggSpeedTall++
+                kokiTall -= byggSpeedPris
+                byggSpeedPris += 50
+                EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+                EL_byggSpeedButikkKnapp.innerHTML = 'Oppgrader bygg fart:<br>' + byggSpeedPris + ' kókier'
+                EL_byggSpeedP.innerHTML = 'Bygg fart: ' + byggSpeedTall
+            }
+        }
+        function byggKlikkUp(){
+            if (kokiTall >= byggKlikkPris) {
+                byggKlikkPower++
+                kokiTall -= byggKlikkPris
+                byggKlikkPris += 200
+                EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+                EL_byggKlikkButikkKnapp.innerHTML = 'Oppgrader bygg klikk:<br>' + byggKlikkPris + ' kókier'
+                EL_byggKlikkP.innerHTML = 'Bygg klikk: ' + byggKlikkPower
+            }
+        }
+       byggRepeater = setInterval(byggKlikk, byggSpeed)
+
+
+
+
+
+
+
+
+       function monsterSpawn(){
+            if (monsterActive == false){
+                clearInterval(monsterRepeater)
+                monsterActive = true
+                monsterDifficulty = (musKlikkPower + byggKlikkPower + byggTall + byggSpeedTall)/4*10
+
+                monsterLevel = Math.floor(Math.random() * 6)
+                if (monsterLevel < 1){
+                    monsterLevel = 1
+                }
+
+                monsterPris = monsterLevel * 5
+                
+                monsterEatTimer = setInterval(monsterEat, 2000)
+                
+                EL_monsterKnapp.innerHTML += '<img src="kókimg/kókimonster.jpg" alt="kókimonster" class="monster_img" height="100px">'
+                EL_monsterP.innerHTML += 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
+            }
+
+        }
+
+        function monsterEat(){
+            if (monsterActive && kokiTall > 0){
+                if (monsterLevel < 5){
+                    kokiTall -= 1
+                } 
+                else { //hvert 5. level på monsteret dobler antall kókier den spiser
+                kokiTall -= 2**Math.floor(monsterLevel/5)
+                }
+
+                if (kokiTall <0){ kokiTall = 0 }
+                EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+            }
+        }
+
+        function monsterFed(){
+            if (kokiTall < monsterPris){
+                monsterPris -= kokiTall
+                kokiTall = 0
+                EL_monsterP.innerHTML = 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
+            } 
+            else if (kokiTall >= monsterPris){
+                clearInterval(monsterEatTimer)
+
+                kokiTall -= monsterPris
+
+                monsterTimer = Math.floor(Math.random() * (monsterTimer -(monsterTimer/1.1)) + (monsterTimer/1.1))
+                console.log(monsterTimer)
+
+                monsterRepeater = setInterval(monsterSpawn, monsterTimer)
+                monsterActive = false
+                
+                EL_monsterKnapp.innerHTML = ''
+                EL_monsterP.innerHTML = ''
+            }
+            EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
+        }
+
+       monsterRepeater = setInterval(monsterSpawn, monsterTimer)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess</title>
+</head>
+<body>
+
+    <h1>Gjuess the tall</h1>
+
+    <input type="number" id="gjett">
+    <button id="button">Gjuess</button>
+    <button id="restart">Restart</button>
+    <button id="fart">Fart</button>
+    
+    <p id="svar">Skriv inn et tall for å gjuesse tallet... hvis du tørr</p>
+    
+    <p id="teller">Forsøk: 0</p>
+
+    <p id="timer">Tid: 0 sec</p>
+
+    <p id="score">Score: 1000</p>
+
+    <p id="highscore"><b>Highscore: 0</b></p>
+
+    <p id="gjennomsnitt">Gjennomsnitt forsøk:</p>
+    <br>
+    <p>Velg max antall:</p>
+    <input type="number" id="velgmax" value='1000'>
+    <button id="setmax">Set max antall og restart</button>
+    
+    <script>
+        var EL_gjettetTall = document.querySelector('#gjett');
+        var EL_button = document.querySelector('#button');
+        var EL_button_restart = document.querySelector('#restart');
+        var EL_forsøk = document.querySelector('#teller');
+        var EL_svar = document.querySelector('#svar');
+
+        var EL_timer = document.querySelector('#timer');
+        var EL_score = document.querySelector('#score');
+        var EL_highscore = document.querySelector('#highscore')
+
+        var EL_fart = document.querySelector('#fart');
+
+        var EL_gjennomsnitt = document.querySelector('#gjennomsnitt');
+
+
+        var EL_maxValg = document.querySelector('#velgmax');
+        var EL_button_max = document.querySelector('#setmax');
+        
+
+
+        var maxTall = EL_maxValg.value
+        var tallMaskin = Math.floor(Math.random()*maxTall)
+        var forsøk = 0
+        var started = false
+        var win = false
+
+        var score = 1000
+        var highscore = 0
+
+        var maxGjett = 20
+        var maxTid = 100
+
+        
+        var gjennomsnittForsøk = 0
+        var totalForsøk = 0
+        var totalWin = 0
+
+
+        var stopp = false
+
+
+        console.log(tallMaskin)
+        
+        
+        function gjett_tallet(){
+            started = true
+            // skjekker om runden er over eller ikke for å forhindredeler av spillet fra å fortsette selv om man er ferdig
+            if (stopp == false){
+                // henter verdien til tallGjetter
+                console.log(EL_gjettetTall.value)
+                
+                forsøk += 1
+                EL_forsøk.innerHTML = "Forsøk: " + forsøk
+                sendScore()
+                
+                if (EL_gjettetTall.value == tallMaskin) {
+                    EL_svar.innerHTML = 'du vant... men du brukte ' + forsøk + ' forsøk og hele ' + sekund + ' sekunder... det tilsvarer en score på bare ' + score + '...';
+                    win = true
+                    finnGjennomsnitt()
+                    sendScore()
+                    if (score > highscore) {
+                        highscore = score
+                        EL_highscore.innerHTML = '<b>Highscore: ' + highscore + '</b>'
+                        EL_svar.innerHTML = 'du vant... men du brukte ' + forsøk + ' forsøk og hele ' + sekund + ' sekunder... det tilsvarer en score på ' + score + '...';
+                    }
+                    stopp = true
+                } else if (forsøk >= maxGjett) {
+                    EL_svar.innerHTML = 'HAHAHA!! Absolutt NOOB!!! Du klarte å bruke opp ALLE forsøkene dine UTEN å gjette det riktige tallet!! wow, jeg er imponert';
+                    stopp = true
+                }
+                else if (EL_gjettetTall.value > tallMaskin) {
+                    EL_svar.innerHTML = 'haha noob, for høy!';
+                } 
+                else if (EL_gjettetTall.value < tallMaskin) {
+                    EL_svar.innerHTML = 'haha noob, for lav!';
+                }
+            }
+        }
+
+
+        function restart(){
+            // skjekker om runden er over eller ikke for å gi et passende svar
+            if (stopp || started == false) {
+                EL_svar.innerHTML = 'Du restartet... skriv inn et tall for å gjuesse tallet';
+            } else {
+                EL_svar.innerHTML = 'Du ga opp... noob';
+            }
+            tallMaskin = Math.floor(Math.random()*maxTall)
+            forsøk = 0
+            EL_forsøk.innerHTML = "Forsøk: " + forsøk
+            win = false
+            started = false
+            stopp = false
+            sekund = 0
+            sendScore()
+            EL_timer.innerHTML = "Tid: " + sekund + " sec"
+            console.log(tallMaskin)
+        }
+
+
+        // knapper
+        EL_button.addEventListener('click', gjett_tallet)
+
+        EL_button_restart.addEventListener('click', restart)
+
+        EL_fart.addEventListener('click', myTimer)
+
+        EL_button_max.addEventListener('click', setMax)
+        EL_button_max.addEventListener('click', restart)
+
+
+
+    
+        var sekund = 0
+        function myTimer(){
+            if (stopp == false && started) {
+                sekund++
+                EL_timer.innerHTML = "Tid: " + sekund + " sec"
+            }
+            if (sekund >= maxTid) {
+                EL_svar.innerHTML = 'HAHAHA!! Absolutt NOOB!!! Du klarte å bruke opp ALL tiden din UTEN å gjette det riktige tallet!! wow, jeg er imponert';
+                stopp = true
+            }
+            sendScore()
+        }
+
+        setInterval(myTimer, 1000) // kjører myTimer hvert 1000 millisekund
+
+
+
+        function sendScore(){
+            if ((forsøk >= maxGjett || sekund >= maxTid) && win == false) {
+                score = 0
+            }
+            else {
+            score = 1000
+            score -= sekund*5 + (forsøk)*25
+            }
+
+            EL_score.innerHTML = 'Score: '+ score
+        }
+
+
+        function finnGjennomsnitt(){
+            totalWin += 1
+            totalForsøk += forsøk
+            gjennomsnittForsøk = totalForsøk/totalWin
+            EL_gjennomsnitt.innerHTML = 'Gjennomsnitt forsøk: ' + gjennomsnittForsøk
+        }
+
+
+
+
+        function setMax(){
+            maxTall = EL_maxValg.value
+            console.log(maxTall)
+        }
+        
+    </script>
+
+
+
+
+
+</body>
+</html>
