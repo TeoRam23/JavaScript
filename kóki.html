@@ -164,7 +164,7 @@
         var defenderPowerPris = 100
         
         
-        var monsterTimer = Math.floor(Math.random() * (45000 + 500 -30000) + 30000)
+        var monsterTimer = Math.floor(Math.random() * (45000 + 1 -30000) + 30000)
         console.log(monsterTimer)
         var monsterLevel = Math.floor(Math.random() * 3)
         var monsterRepeater
@@ -244,7 +244,7 @@
                 
                 monsterEatTimer = setInterval(monsterEat, 2000)
                 
-                EL_monsterImg.innerHTML += '<img src="kókimg/kókimonster.jpg" alt="kókimonster" class="monster_img">'
+                EL_monsterImg.innerHTML += '<img src="kókimg/KókiMonster.gif" alt="kókimonster" class="monster_img">'
                 EL_monsterP.innerHTML += 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
 
 
@@ -471,32 +471,7 @@
                     }
                 }
                 else if (monsterPris <= defenderPower*defenderTall){
-                    if (monsterPris > kokiTall){
-                        monsterPris -= kokiTall
-                        kokiTall -= kokiTall
-                        EL_monsterP.innerHTML = 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
-                    }
-                    else{
-                        clearInterval(monsterEatTimer)
-    
-                        kokiTall -= monsterPris
-    
-                        if (monsterTimer > 500) {
-                            monsterTimer = Math.floor(Math.random() * (monsterTimer + 50 -(monsterTimer/1.1)) + (monsterTimer/1.1))
-                        } else {
-                            monsterTimer = 500
-                        }
-                        console.log(monsterTimer)
-    
-                        monsterRepeater = setInterval(monsterSpawn, monsterTimer)
-                        monsterActive = false
-                        
-                        EL_monsterImg.innerHTML = ''
-                        EL_monsterP.innerHTML = ''
-
-                        kokiSekundCount = (byggTall*byggKlikkPower/(byggSpeed/1000)).toFixed(2)
-                        EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
-                    }
+                    monsterFed()
                 }
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
             }
@@ -512,22 +487,27 @@
                 clearInterval(monsterRepeater)
                 monsterActive = true
                 monsterBonus = 0
-                monsterDifficulty = byggTall*byggKlikkPower/(byggSpeed/1000)
+                //beregner hvor høy level kókimonsteret bør være bassert på hvor mange kokier man får hvert sekund
+                monsterDifficulty = Math.floor(byggTall*byggKlikkPower/(byggSpeed/1000)/10)
 
-                //hhhhhhhmmmmmmmmmmmmmmmmmmmmmm jeg aner ikke hvordan jeg burde gjøre dette...
-                //STOR TEKST FOR Å FÅ FREMTIDSMEG TIL Å LEGGE MERKE TIL DETTE
-                //OG EN TREDJE LINJE FOR EKSTRA STORHET
-                //wmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmmwmw
-                monsterLevel = Math.floor(Math.random() * 5 + 1)
+                console.log(monsterDifficulty)
+
+                monsterLevel = Math.floor(Math.random() * (monsterDifficulty*5+5 + 1 - (monsterDifficulty*5)) + (monsterDifficulty*5))
+                if (monsterLevel == 0) {monsterLevel = Math.floor(Math.random() * 5) + 1}
+
 
                 monsterPris = monsterLevel * 5
                 
                 monsterEatTimer = setInterval(monsterEat, 2000)
                 
-                EL_monsterImg.innerHTML += '<img src="kókimg/kókimonster.jpg" alt="kókimonster" class="monster_img">'
+                EL_monsterImg.innerHTML += '<img src="kókimg/KókiMonster.gif" alt="kókimonster" class="monster_img">'
                 EL_monsterP.innerHTML += 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
 
-                kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((2**Math.floor(monsterLevel/5) + monsterBonus)/2)).toFixed(2)
+                if (monsterLevel < 5){
+                    kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((1 + monsterBonus)/2)).toFixed(2)
+                } else {
+                    kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((Math.floor(monsterLevel/5) + monsterBonus)/2)).toFixed(2)
+                }
                 EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
 
         }
@@ -538,16 +518,21 @@
                     kokiTall -= 1 + monsterBonus
                     monsterBonus++
                 } 
-                else { //hvert 5. level på monsteret dobler antall kókier den spiser
-                kokiTall -= 2**Math.floor(monsterLevel/5) + monsterBonus
-                monsterBonus += 2**Math.floor(monsterLevel/5)
+                else { //hvert 5. level på monsteret endres antall kókier den spiser
+                kokiTall -= Math.floor(monsterLevel/5) + monsterBonus
+                monsterBonus += Math.floor(monsterLevel/5)
                 }
+                
 
                 if (kokiTall <0){ kokiTall = 0 }
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
 
 
-                kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((2**Math.floor(monsterLevel/5) + monsterBonus)/2)).toFixed(2)
+                if (monsterLevel < 5){
+                    kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((1 + monsterBonus)/2)).toFixed(2)
+                } else {
+                    kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((Math.floor(monsterLevel/5) + monsterBonus)/2)).toFixed(2)
+                }
                 EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
             }
         }
@@ -564,13 +549,9 @@
 
                     kokiTall -= monsterPris
 
-                    console.log(monsterTimer)
 
-                    if (monsterTimer > 500) {
-                    monsterTimer = Math.floor(Math.random() * (monsterTimer + 50 -(monsterTimer/1.02)) + (monsterTimer/1.02))
-                    } else {
-                        monsterTimer = 500
-                    }
+                    monsterTimer = Math.floor(Math.random() * (45000 + 1 -30000) + 30000)
+
                     console.log(monsterTimer)
 
                     monsterRepeater = setInterval(monsterSpawn, monsterTimer)

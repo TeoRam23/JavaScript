@@ -129,9 +129,9 @@ body {
 
 
 @keyframes monslide {
-    0% {left: 70px;}
-    50% {left: -70px;}
-    100% {left: 70px;}
+    0% {left: 70px; transform: rotate(-10deg);}
+    50% {left: -70px; transform: rotate(10deg);}
+    100% {left: 70px; transform: rotate(-10deg);}
 }
 
 .bygg {
