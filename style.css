@@ -2,57 +2,31 @@ h1, h2, h3, h4, p, th, td, a, button, input, label {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.knapp_butikk_mus {
-    font-size: 18px;
-    background-color: rgb(222, 222, 222);
-    border-style: solid;
-    border-color: rgb(119, 119, 119);
-    border-radius: 5px;
+body {
+    background-image: url('kókimg/bakgrunn.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
 }
-.knapp_butikk_mus:hover {
-    background-color: rgb(240, 240, 240);
-}
-.knapp_butikk_mus:active {
-    background-color: rgb(181, 181, 181);
+
+#topp {
+    width: 100%;
+    display: flex;
+    justify-content: space-between
 }
 
 
-.knapp_butikk_bygg {
-    font-size: 18px;
-    background-color: rgb(235, 171, 105);
-    border-style: solid;
-    border-color: rgb(178 102 18);
-    border-radius: 5px;
-}
-.knapp_butikk_bygg:hover {
-    background-color: rgb(237, 196, 155);
-}
-.knapp_butikk_bygg:active {
-    background-color: rgb(177, 125, 74);
-}
-
-.knapp_butikk_defender {
-    font-size: 18px;
-    background-color: rgb(155, 165, 200);
-    border-style: solid;
-    border-color: rgb(60, 72, 117);
-    border-radius: 5px;
-}
-.knapp_butikk_defender:hover {
-    background-color: rgb(183, 192, 223);
-}
-.knapp_butikk_defender:active {
-    background-color: rgb(102, 113, 154);
-}
 
 #div_koki {
-    max-width: 300px;
     min-width: fit-content;
+    height: fit-content;
     display: flex;
     align-items: center;
     flex-direction: column;
 
-    background-color: rgb(86, 206, 126);
+    background-color: rgb(140, 174, 237, 0.83);
+    border-style: solid;
+    border-color: rgb(26, 41, 68)
 }
 
 #div_koki_tall {
@@ -60,15 +34,23 @@ h1, h2, h3, h4, p, th, td, a, button, input, label {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    background-color: rgb(79, 155, 206);
+    background-color: rgb(161, 205, 106, 0.83);
+    border-bottom-style: solid;
+    border-color: rgb(26, 41, 68);
 }
 
+#p_sekund {
+    color: rgb(0, 0, 0, 0.83);
+    font-weight: bold;
+    margin-top: -8px;
+}
 
 
 #kokiknapp {
     height: 500px;
     animation: rotation 3s ease-in-out;
     animation-iteration-count: infinite;
+    z-index: 10;
 }
 #kokiknapp:hover {
     animation: shake 0.5s;
@@ -109,21 +91,202 @@ h1, h2, h3, h4, p, th, td, a, button, input, label {
 }
 
 
-#div_oppgraderinger {
-    max-width: fit-content;
+#div_monster {
+    margin-top: 5px;
+    padding: 5px;
+    padding-bottom: 0px;
+    min-height: 245px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+
+    color: rgba(255, 255, 255, 0.83);
+    background-color: rgba(255, 63, 63, 0.83);
+    border-style: solid;
+    border-color: rgb(87, 18, 18);
+}
+#monster_knapp {
+    height: 158px;
+    width: 298px;
+    margin-bottom: -10px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+.monster_img {
+    height: 158px;
+    position: relative;
+    animation: monslide 1s ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+#p_monster {
+    font-weight: bold;
+    font-size: larger;
+    padding: -10px;
+}
+
+
+@keyframes monslide {
+    0% {left: 70px;}
+    50% {left: -70px;}
+    100% {left: 70px;}
+}
+
+.bygg {
+    width: 33%;
+    max-width: 130px;
+}
+.defender {
+    width: 33%;
+    max-width: 130px;
+}
+
+
+#div_bygningere {
+    min-width: 182px;
+    width: 100%;
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    background-color: rgba(200, 200, 200, 0.83);
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+}
+
+#div_bygg_text {
+    width: 100%;
+}
+
+#div_bygninger {
+    width: 100%;
+}
+
+
+#div_save {
+    margin-bottom: -2px;
+    padding: 10px;
+    width: 170px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+    
+    background-color: rgb(244, 244, 244, 0.83);
+    border-style: solid;
+    border-color: rgb(60, 41, 22);
+}
+#save {
+    width: 40%;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.83);
+    background-color: rgb(114, 235, 105);
+    border-style: solid;
+    border-color: rgb(21, 178, 18);
+    border-radius: 5px;
+}
+#save:hover {
+    background-color: rgb(164, 237, 155);
+}
+#save:active {
+    background-color: rgb(81, 177, 74);
+}
+#restart {
+    width: 40%;
+    font-size: 15px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.83);
+    background-color: rgb(235, 105, 105);
+    border-style: solid;
+    border-color: rgb(178, 18, 18);
+    border-radius: 5px;
+}
+#restart:hover {
+    background-color: rgb(237, 155, 155);
+}
+#restart:active {
+    background-color: rgb(177, 74, 74);
+}
+
+
+#div_right
+
+#div_oppgraderinger {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: -2px;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(221, 200, 178, 0.83);
+    border-style: solid;
+    border-color: rgb(60, 41, 22);
 }
 
 #div_butikk {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    width: 170px;
     display: flex;
     flex-direction: column;
+    color: rgba(255, 255, 255, 0.83);
+    background-color: rgba(72, 72, 72, 0.83);
+    border-style: solid;
+    border-color: rgb(60, 41, 22);
 }
 .div_butikker {
     margin-top: 5px;
 }
 
-#monster_knapp {
-    width: fit-content;
-    height: fit-content;
+
+.knapp_butikk_mus {
+    width: 100%;
+    font-size: 18px;
+    background-color: rgb(222, 222, 222);
+    border-style: solid;
+    border-color: rgb(119, 119, 119);
+    border-radius: 5px;
+}
+.knapp_butikk_mus:hover {
+    background-color: rgb(240, 240, 240);
+}
+.knapp_butikk_mus:active {
+    background-color: rgb(181, 181, 181);
+}
+
+
+.knapp_butikk_bygg {
+    width: 100%;
+    font-size: 18px;
+    background-color: rgb(235, 171, 105);
+    border-style: solid;
+    border-color: rgb(178 102 18);
+    border-radius: 5px;
+}
+.knapp_butikk_bygg:hover {
+    background-color: rgb(237, 196, 155);
+}
+.knapp_butikk_bygg:active {
+    background-color: rgb(177, 125, 74);
+}
+
+.knapp_butikk_defender {
+    width: 100%;
+    font-size: 18px;
+    background-color: rgb(155, 165, 200);
+    border-style: solid;
+    border-color: rgb(60, 72, 117);
+    border-radius: 5px;
+}
+.knapp_butikk_defender:hover {
+    background-color: rgb(183, 192, 223);
+}
+.knapp_butikk_defender:active {
+    background-color: rgb(102, 113, 154);
 }

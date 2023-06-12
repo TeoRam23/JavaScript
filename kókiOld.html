@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>KókiSAVE</title>
+    <title>Kóki</title>
 </head>
 
 <body>
@@ -33,20 +33,16 @@
         -   kast 1 kóki på Kókimonster for å få de til å gå
     -->
 
-    
-
-
     <div id="topp">
         <div id="div_left">
             <div id="div_koki">
                 <div id="div_koki_tall">
                     <h1 id="kokicount">Kókier: 0</h1>
-                    <p id="p_sekund"> Kókier per sekund: 0.00</p>
                 </div><div id="div_koki_knapp">
                     <img src="kókimg/Kóki2.png" alt="Kóki" id="kokiknapp">
                 </div>
             </div>
-            
+
             <div id="div_monster">
                 <div id="monster_knapp"></div>
                 <p id="p_monster"></p>
@@ -61,10 +57,6 @@
         </div>
 
         <div id="div_right">
-            <div id="div_save">
-                <button id="save" class="saver">Save</button>
-                <button id="restart" class="restarter">restart</button>
-            </div>
             <div id="div_oppgraderinger">
                 <h3>Oppgraderinger</h3>
                 <p id="p_mus">Mus klikk: 1</p>
@@ -87,7 +79,7 @@
                     <button id="knapp_klikk_bygg" class="knapp_butikk_bygg">Oppgrader bygg klikk:<br>100 kókier</button>
                 </div>
                 <div class="div_butikker">
-                    <button id="knapp_kjøp_defender" class="knapp_butikk_defender">Kjøp defender:<br>25 kókier</button>
+                    <button id="knapp_kjøp_defender" class="knapp_butikk_defender">Kjøp defender:<br>50 kókier</button>
                     <button id="knapp_speed_defender" class="knapp_butikk_defender">Oppgrader defender fart:<br>50 kókier</button>
                     <button id="knapp_klikk_defender" class="knapp_butikk_defender">Oppgrader defender klikk:<br>100 kókier</button>
                 </div>
@@ -102,7 +94,6 @@
         //https://aunivers.no/fagpakker/realfag/informasjonsteknologi-1-2/it-1/5-lagring-og-henting-av-data/5a-informasjonskapsler/lokal-lagring-med-localstorage
         var EL_kokiKnapp = document.querySelector('#kokiknapp')
         var EL_kokiCounter = document.querySelector('#kokicount')
-        var EL_kokiSekund = document.querySelector('#p_sekund')
 
         var EL_bygningerDiv = document.querySelector('#div_bygninger')
         var EL_monsterDiv = document.querySelector('#div_monster')
@@ -121,200 +112,51 @@
         var EL_byggP = document.querySelector('#p_bygg')
         var EL_byggSpeedP = document.querySelector('#p_bygg_speed')
         var EL_byggKlikkP = document.querySelector('#p_bygg_klikk')
-        var EL_defenderP = document.querySelector('#p_defender')
-        var EL_defenderSpeedP = document.querySelector('#p_defender_speed')
-        var EL_defenderKlikkP = document.querySelector('#p_defender_klikk')
 
-        var EL_monsterImg = document.querySelector('#monster_knapp')
+        var EL_monsterKnapp = document.querySelector('#monster_knapp')
         var EL_monsterP = document.querySelector('#p_monster')
 
-        var EL_saveKnapp = document.querySelector('#save')
-        var EL_restartKnapp = document.querySelector('#restart')
-
-        var saveTimer
-
         var kokiTall = 0
-        var kokiSekundCount
-        
-        
+
+
         var musKlikkPower = 1
-        
+
         var byggTall = 0
-        var byggSpeed = 3000
+        var byggSpeed = 5000
         var byggSpeedTall = 1
         var byggKlikkPower = 1
         var byggRepeater
-        var randomBygg
-        
+
         var defenderTall = 0
-        var defenderSpeed = 3000
+        var defenderSpeed = 5000
         var defenderSpeedTall = 1
         var defenderPower = 1
         var defenderRepeater
         
-        
+
         var musPris = 50
-        
+
         var byggPris = 25
         var byggSpeedPris = 50
         var byggKlikkPris = 100
-        
-        var defenderPris = 25
+
+        var defenderPris = 50
         var defenderSpeedPris = 50
         var defenderPowerPris = 100
-        
-        
-        var monsterTimer = Math.floor(Math.random() * (45000 + 500 -30000) + 30000)
+
+
+        var monsterTimer = Math.floor(Math.random() * (45000 -30000) + 30000)
         console.log(monsterTimer)
         var monsterLevel = Math.floor(Math.random() * 3)
-        var monsterRepeater
         var monsterDifficulty
         var monsterActive = false
         var monsterEatTimer
         var monsterPris
         var monsterBonus
-        
-        
-
-        if (localStorage.isSaved == "true"){
-            kokiTall = Number(localStorage.kokiTallSave)
-            EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
-            
-
-
-            musKlikkPower = Number(localStorage.musKlikkPowerSave)
-            EL_musP.innerHTML = 'Mus klikk: ' + musKlikkPower
-
-            musPris = Number(localStorage.musPrisSave)
-            EL_musButikkKnapp.innerHTML = 'Oppgrader mus:<br>' + musPris + ' kókier'
 
 
 
-            EL_bygningerDiv.innerHTML = localStorage.EL_bygningerDivSave
-            byggTall = Number(localStorage.byggTallSave)
-            EL_byggP.innerHTML = 'Antall bygg: ' + byggTall
 
-            byggPris = Number(localStorage.byggPrisSave)
-            EL_byggButikkKnapp.innerHTML = 'Kjøp bygg:<br>' + byggPris + ' kókier'
-
-            byggSpeed = Number(localStorage.byggSpeedSave)
-            byggSpeedTall = Number(localStorage.byggSpeedTallSave)
-            EL_byggSpeedP.innerHTML = 'Bygg fart: ' + byggSpeedTall
-            byggSpeedPris = Number(localStorage.byggSpeedPrisSave)
-            EL_byggSpeedButikkKnapp.innerHTML = 'Oppgrader bygg fart:<br>' + byggSpeedPris + ' kókier'
-
-            byggKlikkPower = Number(localStorage.byggKlikkPowerSave)
-            EL_byggKlikkP.innerHTML = 'Bygg klikk: ' + byggKlikkPower
-            byggKlikkPris = Number(localStorage.byggKlikkPrisSave)
-            EL_byggKlikkButikkKnapp.innerHTML = 'Oppgrader bygg klikk:<br>' + byggKlikkPris + ' kókier'
-
-
-
-            defenderTall = Number(localStorage.defenderTallSave)
-            EL_defenderP.innerHTML = 'Antall defendere: ' + defenderTall
-
-            defenderPris = Number(localStorage.defenderPrisSave)
-            EL_defenderButikkKnapp.innerHTML = 'Kjøp defender:<br>' + defenderPris + ' kókier'
-
-
-            defenderSpeed = Number(localStorage.defenderSpeedSave)
-            defenderSpeedTall = Number(localStorage.defenderSpeedTallSave)
-            EL_defenderSpeedP.innerHTML = 'Defender fart: ' + defenderSpeedTall
-            defenderSpeedPris = Number(localStorage.defenderSpeedPrisSave)
-            EL_defenderSpeedButikkKnapp.innerHTML = 'Oppgrader defender fart:<br>' + defenderSpeedPris + ' kókier'
-
-            defenderPower = Number(localStorage.defenderPowerSave)
-            EL_defenderKlikkP.innerHTML = 'Defender klikk: ' + defenderPower
-            defenderPowerPris = Number(localStorage.defenderPowerPrisSave)
-            EL_defenderPowerButikkKnapp.innerHTML = 'Oppgrader defender klikk:<br>' + defenderPowerPris + ' kókier'
-
-            
-            if (localStorage.monsterActiveSave == "true") {
-                clearInterval(monsterRepeater)
-                monsterActive = true
-                monsterBonus = 0
-                monsterDifficulty = (musKlikkPower + byggKlikkPower + byggTall + byggSpeedTall)/4*10
-
-                monsterLevel = Number(localStorage.monsterLevelSave)
-                
-                monsterPris = Number(localStorage.monsterPrisSave)
-
-                monsterBonus = Number(localStorage.monsterBonusSave)
-
-                
-                monsterEatTimer = setInterval(monsterEat, 2000)
-                
-                EL_monsterImg.innerHTML += '<img src="kókimg/kókimonster.jpg" alt="kókimonster" class="monster_img">'
-                EL_monsterP.innerHTML += 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
-
-
-                kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((2**Math.floor(monsterLevel/5) + monsterBonus)/2)).toFixed(2)
-                EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
-            } else {
-                kokiSekundCount = (byggTall*byggKlikkPower/(byggSpeed/1000)).toFixed(2)
-                EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
-            }
-            monsterTimer = Number(localStorage.monsterTimerSave)
-            console.log(monsterTimer)
-        } 
-        else {
-            localStorage.isSaved = ""
-        }
-
-        
-        EL_saveKnapp.addEventListener('click', savethis)
-        EL_restartKnapp.addEventListener('click', restartthis)
-
-        function savethis(){
-            console.log("saved")
-            localStorage.isSaved = true
-
-
-            localStorage.kokiTallSave = kokiTall
-
-            localStorage.musKlikkPowerSave = musKlikkPower
-            localStorage.musPrisSave = musPris
-
-
-            localStorage.EL_bygningerDivSave = EL_bygningerDiv.innerHTML
-            localStorage.byggTallSave = byggTall
-            localStorage.byggPrisSave = byggPris
-
-            localStorage.byggSpeedTallSave = byggSpeedTall
-            localStorage.byggSpeedSave = byggSpeed
-            localStorage.byggSpeedPrisSave = byggSpeedPris
-
-            localStorage.byggKlikkPowerSave = byggKlikkPower
-            localStorage.byggKlikkPrisSave = byggKlikkPris
-
-
-
-            localStorage.defenderTallSave = defenderTall
-            localStorage.defenderPrisSave = defenderPris
-
-            localStorage.defenderSpeedTallSave = defenderSpeedTall
-            localStorage.defenderSpeedSave = defenderSpeed
-            localStorage.defenderSpeedPrisSave = defenderSpeedPris
-
-            localStorage.defenderPowerSave = defenderPower
-            localStorage.defenderPowerPrisSave = defenderPowerPris
-
-
-            localStorage.monsterActiveSave = monsterActive
-            localStorage.monsterTimerSave = monsterTimer
-            localStorage.monsterLevelSave = monsterLevel
-            localStorage.monsterPrisSave = monsterPris
-            localStorage.monsterBonusSave = monsterBonus
-        }
-        function restartthis(){
-            if (confirm("Er du sikker på at du vil restarte?")) {
-                localStorage.isSaved = ""
-                location.reload()
-            }
-        }
-                
-        
-        
         EL_kokiKnapp.addEventListener('click', klikk)
         EL_musButikkKnapp.addEventListener('click', musKlikkUp)
 
@@ -325,12 +167,8 @@
         EL_defenderButikkKnapp.addEventListener('click', defenderAdd)
         EL_defenderSpeedButikkKnapp.addEventListener('click', defenderSpeedUp)
         EL_defenderPowerButikkKnapp.addEventListener('click', defenderKlikkUp)
-        
-        EL_monsterDiv.addEventListener('click', monsterFed)
 
-
-
-
+        EL_monsterKnapp.addEventListener('click', monsterFed)
 
         function klikk(){
             kokiTall += musKlikkPower
@@ -364,20 +202,10 @@
                 byggTall++
                 kokiTall -= byggPris
                 byggPris += 25
+                EL_bygningerDiv.innerHTML += '<img src="kókimg/Pow.gif" alt="bygg" class="bygg" height="100px">'
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
                 EL_byggButikkKnapp.innerHTML = 'Kjøp bygg:<br>' + byggPris + ' kókier'
                 EL_byggP.innerHTML = 'Antall bygg: ' + byggTall
-
-                randomBygg = Math.floor(Math.random() * 3)
-                if (randomBygg == 0) {
-                    EL_bygningerDiv.innerHTML += '<img src="kókimg/KókiGenerator.png" alt="bygg" class="bygg"">'
-                } else if (randomBygg == 1) {
-                    EL_bygningerDiv.innerHTML += '<img src="kókimg/KókiOvn.png" alt="bygg" class="bygg"">'
-                } else if (randomBygg == 2) {
-                    EL_bygningerDiv.innerHTML += '<img src="kókimg/KókiPuker.png" alt="bygg" class="bygg"">'
-                }
-                kokiSekundCount = (byggTall*byggKlikkPower/(byggSpeed/1000)).toFixed(2)
-                EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
             }
         }
         function byggSpeedUp(){
@@ -389,9 +217,6 @@
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
                 EL_byggSpeedButikkKnapp.innerHTML = 'Oppgrader bygg fart:<br>' + byggSpeedPris + ' kókier'
                 EL_byggSpeedP.innerHTML = 'Bygg fart: ' + byggSpeedTall
-
-                kokiSekundCount = (byggTall*byggKlikkPower/(byggSpeed/1000)).toFixed(2)
-                EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
             }
         }
         function byggKlikkUp(){
@@ -402,9 +227,6 @@
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
                 EL_byggKlikkButikkKnapp.innerHTML = 'Oppgrader bygg klikk:<br>' + byggKlikkPris + ' kókier'
                 EL_byggKlikkP.innerHTML = 'Bygg klikk: ' + byggKlikkPower
-
-                kokiSekundCount = (byggTall*byggKlikkPower/(byggSpeed/1000)).toFixed(2)
-                EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
             }
         }
         function byggKlikk(){
@@ -424,10 +246,10 @@
                 defenderTall++
                 kokiTall -= defenderPris
                 defenderPris += 25
-                EL_bygningerDiv.innerHTML += '<img src="kókimg/KókiDefender.png" alt="defender" class="defender">'
+                EL_bygningerDiv.innerHTML += '<img src="kókimg/KókiDefender.png" alt="defender" class="defender" height="100px">'
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
                 EL_defenderButikkKnapp.innerHTML = 'Kjøp defender:<br>' + defenderPris + ' kókier'
-                EL_defenderP.innerHTML = 'Antall defendere: ' + defenderTall
+                EL_defenderP.innerHTML = 'Antall defender: ' + defenderTall
                 //EL_defenderP.innerHTML = 'Antall defender: ' + defenderTall
             }
         }
@@ -482,7 +304,7 @@
                         kokiTall -= monsterPris
     
                         if (monsterTimer > 500) {
-                            monsterTimer = Math.floor(Math.random() * (monsterTimer + 50 -(monsterTimer/1.1)) + (monsterTimer/1.1))
+                            monsterTimer = Math.floor(Math.random() * (monsterTimer -(monsterTimer/1.1)) + (monsterTimer/1.1))
                         } else {
                             monsterTimer = 500
                         }
@@ -491,11 +313,8 @@
                         monsterRepeater = setInterval(monsterSpawn, monsterTimer)
                         monsterActive = false
                         
-                        EL_monsterImg.innerHTML = ''
+                        EL_monsterKnapp.innerHTML = ''
                         EL_monsterP.innerHTML = ''
-
-                        kokiSekundCount = (byggTall*byggKlikkPower/(byggSpeed/1000)).toFixed(2)
-                        EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
                     }
                 }
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
@@ -509,26 +328,21 @@
 
 
        function monsterSpawn(){
+            if (monsterActive == false){
                 clearInterval(monsterRepeater)
                 monsterActive = true
                 monsterBonus = 0
-                monsterDifficulty = byggTall*byggKlikkPower/(byggSpeed/1000)
+                monsterDifficulty = (musKlikkPower + byggKlikkPower + byggTall + byggSpeedTall)/4*10
 
-                //hhhhhhhmmmmmmmmmmmmmmmmmmmmmm jeg aner ikke hvordan jeg burde gjøre dette...
-                //STOR TEKST FOR Å FÅ FREMTIDSMEG TIL Å LEGGE MERKE TIL DETTE
-                //OG EN TREDJE LINJE FOR EKSTRA STORHET
-                //wmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmwmmwmw
-                monsterLevel = Math.floor(Math.random() * 5 + 1)
+                monsterLevel = Math.floor(Math.random() * (5 - 1 + 1) + 1)
 
                 monsterPris = monsterLevel * 5
                 
                 monsterEatTimer = setInterval(monsterEat, 2000)
                 
-                EL_monsterImg.innerHTML += '<img src="kókimg/kókimonster.jpg" alt="kókimonster" class="monster_img">'
+                EL_monsterKnapp.innerHTML += '<img src="kókimg/kókimonster.jpg" alt="kókimonster" class="monster_img">'
                 EL_monsterP.innerHTML += 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
-
-                kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((2**Math.floor(monsterLevel/5) + monsterBonus)/2)).toFixed(2)
-                EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
+            }
 
         }
 
@@ -545,54 +359,39 @@
 
                 if (kokiTall <0){ kokiTall = 0 }
                 EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
-
-
-                kokiSekundCount = ((byggTall*byggKlikkPower/(byggSpeed/1000))-((2**Math.floor(monsterLevel/5) + monsterBonus)/2)).toFixed(2)
-                EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
             }
         }
 
         function monsterFed(){
-            if (monsterActive == true){
-                if (kokiTall < monsterPris){
-                    monsterPris -= kokiTall
-                    kokiTall = 0
-                    EL_monsterP.innerHTML = 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
-                } 
-                else if (kokiTall >= monsterPris){
-                    clearInterval(monsterEatTimer)
+            if (kokiTall < monsterPris){
+                monsterPris -= kokiTall
+                kokiTall = 0
+                EL_monsterP.innerHTML = 'lvl ' + monsterLevel +'<br>'+ monsterPris +' kókier'
+            } 
+            else if (kokiTall >= monsterPris){
+                clearInterval(monsterEatTimer)
 
-                    kokiTall -= monsterPris
+                kokiTall -= monsterPris
 
-                    console.log(monsterTimer)
+                console.log(monsterTimer)
 
-                    if (monsterTimer > 500) {
-                    monsterTimer = Math.floor(Math.random() * (monsterTimer + 50 -(monsterTimer/1.02)) + (monsterTimer/1.02))
-                    } else {
-                        monsterTimer = 500
-                    }
-                    console.log(monsterTimer)
-
-                    monsterRepeater = setInterval(monsterSpawn, monsterTimer)
-                    monsterActive = false
-                    
-                    EL_monsterImg.innerHTML = ''
-                    EL_monsterP.innerHTML = ''
-
-                    kokiSekundCount = (byggTall*byggKlikkPower/(byggSpeed/1000)).toFixed(2)
-                    EL_kokiSekund.innerHTML = 'Kókier per sekund: ' + kokiSekundCount
+                if (monsterTimer > 500) {
+                monsterTimer = Math.floor(Math.random() * (monsterTimer -(monsterTimer/1.1)) + (monsterTimer/1.1))
+                } else {
+                    monsterTimer = 500
                 }
-                EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
-            }  
+                console.log(monsterTimer)
+
+                monsterRepeater = setInterval(monsterSpawn, monsterTimer)
+                monsterActive = false
+                
+                EL_monsterKnapp.innerHTML = ''
+                EL_monsterP.innerHTML = ''
+            }
+            EL_kokiCounter.innerHTML = 'Kókier: ' + kokiTall
         }
 
-        monsterRepeater = setInterval(monsterSpawn, monsterTimer)
-        if (monsterActive) {
-            clearInterval(monsterRepeater)
-        }
-
-
-        saveTimer = setInterval(savethis, 3000)
+       monsterRepeater = setInterval(monsterSpawn, monsterTimer)
     </script>
 </body>
 
