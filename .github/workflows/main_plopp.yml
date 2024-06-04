@@ -59,4 +59,4 @@ jobs:
           app-name: 'plopp'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BEEDEFA974BE4FECB943F27FDAF9EA47 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A51FC15D13754432AE77A3666FBE9754 }}
